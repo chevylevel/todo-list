@@ -1,0 +1,28 @@
+.root {
+  position: relative;
+}
+
+.control {
+  padding: 7px 12px;
+  line-height: 1;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-2));
+  border-radius: var(--mantine-radius-md);
+  font-size: var(--mantine-font-size-md);
+  transition: color 100ms ease;
+
+  &[data-active] {
+    font-weight: 500;
+  }
+}
+
+.controlLabel {
+  position: relative;
+  z-index: 1;
+}
+
+.indicator {
+  background-color: var(--mantine-color-white);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--mantine-color-gray-2);
+  box-shadow: var(--mantine-shadow-md);
+}
