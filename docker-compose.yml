@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/usr/src/app:delegated
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@db:5432/mydb"
+    command: [ "npm", "run", "start:dev" ]
+    develop:
+      watch:
+        - action: sync
+          path: ./client
+          target: /usr/src/app/
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
+
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/usr/src/app:delegated
+      - /usr/src/app/node_modules
+    environment:
+      VITE_API_URL: "http://localhost:3000"
+    command: [ "npm", "run", "dev", "--", "--host" ]
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
